@@ -7,6 +7,7 @@ const crypto = require("crypto")
 const { v2: cloudinary } = require('cloudinary');
 const { uploadToCloudinary } = require("../utils/uploadHelpers.js")
 const { default: axios } = require("axios")
+// const nodemailer = require("nodemailer")
 const transporter = require("../config/nodemailer.js")
 
 
@@ -237,7 +238,7 @@ exports.sendEmail = asyncErrors(async (req, res, next) => {
 
     if (!name || !email || !phone || !subject || !message) return next(new ErrorHandler("Kindly fill all fields", 400))
 
-    let info = await transporter.sendMail({
+    await transporter().sendMail({
         from: "Design With Sumaiya Website <admin@designwithsumaiya.com>",
         to: "sumaiyaghani123@gmail.com", // Replace this with the dynamic email address as necessary
         subject: "New Quote Request from Design With Sumaiya Website",
@@ -263,7 +264,7 @@ exports.sendEmail = asyncErrors(async (req, res, next) => {
             `,
     });
 
-    return res.status(200).json({ success: true, message: 'Email sent successfully', info });
+    return res.status(200).json({ success: true, message: 'Email sent successfully' });
 
 })
 
