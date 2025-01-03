@@ -2,7 +2,6 @@ const asyncErrors = require("../middlewares/asyncErrors.js")
 const ErrorHandler = require("../utils/errorHandler.js")
 const User = require("../models/user.model.js")
 const sendToken = require("../utils/jwtToken.js")
-const sendEmail = require("../utils/sendEmail.js")
 const crypto = require("crypto")
 const { v2: cloudinary } = require('cloudinary');
 const { uploadToCloudinary } = require("../utils/uploadHelpers.js")
