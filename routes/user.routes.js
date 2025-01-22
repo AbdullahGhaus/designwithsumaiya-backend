@@ -4,7 +4,7 @@ const { isAuthenticated, authorizedRoles } = require("../middlewares/auth")
 const upload = require("../middlewares/multer")
 const router = express.Router()
 
-router.route('/register').post(upload.single("file"), registerUser)
+router.route('/register').post(registerUser)
 router.route('/login').post(loginUser)
 router.route('/forgot-password').post(forgotPassword)
 router.route('/resume').get(getUserResumeDetails)

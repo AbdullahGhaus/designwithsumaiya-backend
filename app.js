@@ -1,14 +1,16 @@
 const express = require("express")
 const cors = require("cors")
-const cookieParser = require("cookie-parser")
 const morgan = require("morgan")
 const app = express()
 
+
 const errorMiddleware = require("./middlewares/error")
 
-app.use(cors())
+
+app.use(cors({
+    origin: "*"
+}))
 app.use(express.json())
-app.use(cookieParser())
 app.use(morgan("combined"))
 
 //Rotues
