@@ -188,9 +188,6 @@ exports.updateUserImageByCloudinary = asyncErrors(async (req, res, next) => {
     const user = await User.findById(id);
     if (!user) return next(new ErrorHandler("User not found", 404));
 
-    console.log(user);
-
-
     let folderAssets = await cloudinary.api.resources_by_asset_folder(`resume`)
     let publicIds = folderAssets?.resources?.map(x => x?.secure_url)
     if (!publicIds?.length) return nwxt(new ErrorHandler("No file found in cloudinary", 404))

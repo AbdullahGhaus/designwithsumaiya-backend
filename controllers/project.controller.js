@@ -25,8 +25,21 @@ const createProject = asyncErrors(async (req, res, next) => {
 
     if (!folderExists?.exists) return next(new ErrorHandler(`${folderPath} does not exist in cloudinary`, 404))
 
-    let assets = await cloudinary.api.resources_by_asset_folder(folderPath)
-    let urls = assets.resources?.map(x => x?.secure_url)
+    let assets = [];
+    let nextCursor = null;
+
+    do {
+        const response = await cloudinary.api.resources_by_asset_folder(folderPath, {
+            max_results: 10, // Optional: You can increase up to 500, but the default is 10
+            next_cursor: nextCursor, // Pass the cursor to fetch the next set of results
+        });
+
+        assets = [...assets, ...response.resources];
+        nextCursor = response.next_cursor; // Get the next cursor, if available
+    } while (nextCursor); // Continue while there's a next cursor
+
+
+    let urls = assets.map((x) => x.secure_url);
 
     if (category?.projects?.length) {
         let isProjectAlreadyExists = category?.projects?.filter(x => x?.name == name)
