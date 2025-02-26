@@ -234,6 +234,35 @@ const ProjectFolderNamesByCloudinary = asyncErrors(async (req, res, next) => {
 });
 
 
+const getSomeOfMyWorkProjects = asyncErrors(async (req, res, next) => {
+
+    let folderPath = `some of my work`
+
+    let assets = [];
+    let nextCursor = null;
+
+    do {
+        const response = await cloudinary.api.resources_by_asset_folder(folderPath, {
+            max_results: 10, // Optional: You can increase up to 500, but the default is 10
+            next_cursor: nextCursor, // Pass the cursor to fetch the next set of results
+        });
+
+        assets = [...assets, ...response.resources];
+        nextCursor = response.next_cursor; // Get the next cursor, if available
+    } while (nextCursor); // Continue while there's a next cursor
 
 
-module.exports = { createProject, updateProject, deleteProject, getAllProjectsByCategoryID, projectDetails, getAllProjects, updateProjectByCloudinary, ProjectFolderNamesByCloudinary }
+    let urls = assets.map((x) => x.secure_url);
+
+    res.status(201).json({
+        success: true,
+        urls
+    })
+
+});
+
+
+
+
+
+module.exports = { createProject, updateProject, deleteProject, getAllProjectsByCategoryID, projectDetails, getAllProjects, updateProjectByCloudinary, ProjectFolderNamesByCloudinary, getSomeOfMyWorkProjects }
